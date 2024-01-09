@@ -23,13 +23,9 @@ export const UserOptions = {
 
         const user = await User.findOne({email: email})
 
-        console.log(user)
-
         if (!user) {
             return false
         }
-
-        console.log(password, user.password)
 
         if (await bcrypt.compare(password, user.password)) {
             return user

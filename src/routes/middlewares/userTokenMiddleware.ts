@@ -1,12 +1,9 @@
 import * as jwt from 'jsonwebtoken'
-import {Request, Response} from "express";
-import {NextFunction} from "express";
+import {NextFunction, Request, Response} from "express";
 import {UserOptions} from "../../servives/userServices";
-import {errorsChecker} from "./validationResult";
-import UsersData from "../../data/usersData";
 
 
-export const userTokenMiddleware = async (req: Request, res: Response, next: NextFunction) => {
+export const userTokenMiddleware = async (req: any, res: Response, next: NextFunction) => {
     const token: string = (req.headers.authorization || '').replace('Bearer ', '')
 
     if (token) {
@@ -18,7 +15,7 @@ export const userTokenMiddleware = async (req: Request, res: Response, next: Nex
             }
             const user = await UserOptions.findUser(decodedToken.login, decodedToken.password)
             if (user) {
-                req.body.data = UserOptions.userAPI(user)
+                req.userID = user._id.toString();
                 next(); // передаем управление следующему middleware
             }
 
